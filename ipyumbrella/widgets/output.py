@@ -3,7 +3,7 @@ import ipywidgets.widgets as w
 from traitlets import Bool
 
 class Output(w.Output):
-    err_stop = Bool(False, help="Stop execution when exception is raised.").tag(sync=True)
+    err_stop = Bool(True, help="Stop execution when exception is raised.").tag(sync=True)
 
     def __exit__(self, etype, evalue, tb):
         """Called upon exiting output widget context manager."""

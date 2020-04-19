@@ -11,13 +11,14 @@ class CollectionMixin:
         with out:
             yield out
 
+    def select(self, i):
+        self.selected_index = i
+
     def append(self, child, title=None, selected=None):
         self.children += (child,)
         if title:
             self.set_title(len(self.children) - 1, title)
-        if selected:
-            self.selected_index = len(self.children) - 1
-
+        self.select(selected and len(self.children) - 1)
 
 
 class Accordion(w.Accordion, CollectionMixin):
