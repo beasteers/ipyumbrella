@@ -12,7 +12,7 @@ class _CollectionMixin:
         self.output_layout = output_layout or self.output_layout
 
     def item(self, title=None, layout=None, err_stop=True, **kw):
-        outlayout = None if title else layout or self.output_layout
+        outlayout = w.Layout() if title else layout or self.output_layout
         return self.append(Output(
             err_stop=err_stop, layout=outlayout, **kw),
             title=title, layout=layout)
