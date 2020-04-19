@@ -7,13 +7,19 @@ from .output import Output
 class _CollectionMixin:
     output_layout = w.Layout()
     title_layout = w.Layout(font_size='1.2em')
+    def __init__(self, *a, output_layout=None, **kw):
+        super().__init__(*a, **kw)
+        self.output_layout = output_layout or self.output_layout
+
     def item(self, title=None, layout=None, err_stop=True, **kw):
         return self.append(Output(
-            err_stop=err_stop, layout=layout or self.output_layout, **kw), title=title)
+            err_stop=err_stop, layout=not title and (layout or self.output_layout), **kw),
+            title=title, layout=layout)
 
-    def append(self, child, title=None):
+    def append(self, child, title=None, layout=None):
         if title:
-            wrap = w.HBox([w.Label(value=title, layout=self.title_layout), child])
+            wrap = w.VBox([w.Label(value=title, layout=self.title_layout), child],
+                          layout=layout or self.output_layout)
             self.children += (wrap,)
         else:
             self.children += (child,)
