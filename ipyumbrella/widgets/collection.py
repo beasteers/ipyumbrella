@@ -7,8 +7,9 @@ from .output import Output
 class _CollectionMixin:
     output_layout = w.Layout()
     title_layout = w.Layout(font_size='1.2em')
-    def item(self, layout=None, err_stop=True, **kw):
-        return self.append(Output(err_stop=err_stop, layout=layout or self.output_layout, **kw))
+    def item(self, title=None, *, layout=None, err_stop=True, **kw):
+        return self.append(Output(
+            err_stop=err_stop, layout=layout or self.output_layout, **kw), title=title)
 
     def append(self, child, title=None):
         if title:
