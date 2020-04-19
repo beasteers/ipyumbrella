@@ -3,7 +3,7 @@ import ipywidgets.widgets as w
 from .output import Output
 
 
-class CollectionMixin:
+class _CollectionMixin:
     @contextmanager
     def _capture(self, title=None, selected=None, err_stop=True, **kw):
         out = Output(err_stop=err_stop, **kw)
@@ -21,10 +21,10 @@ class CollectionMixin:
         self.select(selected and len(self.children) - 1)
 
 
-class Accordion(w.Accordion, CollectionMixin):
+class Accordion(w.Accordion, _CollectionMixin):
     pass
 
-class Carousel(w.Box, CollectionMixin):
+class Carousel(w.Box, _CollectionMixin):
     layout = w.Layout(
         flex_flow='row nowrap',
         overflow_x='auto',
@@ -40,5 +40,5 @@ class Carousel(w.Box, CollectionMixin):
         return super().append(child, title=None, selected=None, **kw)
 
 
-class Tab(w.Tab, CollectionMixin):
+class Tab(w.Tab, _CollectionMixin):
     pass
