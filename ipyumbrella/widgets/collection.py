@@ -13,8 +13,10 @@ class _CollectionMixin:
 
     def append(self, child, title=None):
         if title:
-            child = w.HBox([w.Label(value=title, layout=self.title_layout), child])
-        self.children += (child,)
+            wrap = w.HBox([w.Label(value=title, layout=self.title_layout), child])
+            self.children += (wrap,)
+        else:
+            self.children += (child,)
         return child
 
     def __len__(self):
