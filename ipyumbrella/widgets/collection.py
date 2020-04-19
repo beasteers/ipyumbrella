@@ -47,6 +47,7 @@ class Carousel(w.Box, _CollectionMixin):
     layout = w.Layout(
         flex_flow='row nowrap',
         overflow_x='auto',
+        overflow_y='visible',
         max_width='100%',
     )
 

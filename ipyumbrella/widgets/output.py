@@ -1,9 +1,17 @@
 from IPython import get_ipython
+from IPython.display import display, HTML
 import ipywidgets.widgets as w
 from traitlets import Bool
 
 class Output(w.Output):
     err_stop = Bool(True, help="Stop execution when exception is raised.").tag(sync=True)
+
+    def __init__(self, *a, no_scroll=True, **kw):
+        super().__init__(*a, **kw)
+        if no_scroll:
+            self.add_class('output_scroll_disabled')
+            with self:
+                disable_scroll('.output_scroll_disabled')
 
     def __exit__(self, etype, evalue, tb):
         """Called upon exiting output widget context manager."""
@@ -19,3 +27,28 @@ class Output(w.Output):
         # if self.err_stop:
         #     raise ExceptionAlreadyShownByOutput(etype, evalue, tb)
         return not self.err_stop if ip else None
+
+
+def disable_scroll(selector='.output_scroll'):
+    display(HTML('''
+    <style>
+        %s {
+            height: unset !important;
+            border-radius: unset !important;
+            -webkit-box-shadow: unset !important;
+            box-shadow: unset !important;
+        }
+    </style>
+    ''' % selector))
+
+def css(selector, nindent=2, **kw):
+    display(HTML('''
+    <style>
+        {} {{
+            {}
+        }}
+    </style>
+    '''.format(selector, '\n'.join(
+        ' ' * nindent + '{}: {};'.format(k, v)
+        for k, v in kw.items()
+    ))))
