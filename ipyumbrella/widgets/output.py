@@ -10,8 +10,7 @@ class Output(w.Output):
         super().__init__(*a, **kw)
         if no_scroll:
             self.add_class('output_scroll_disabled')
-            with self:
-                disable_scroll('.output_scroll_disabled')
+            self.append_display_data(disable_scroll_obj('.output_scroll_disabled'))
 
     def __exit__(self, etype, evalue, tb):
         """Called upon exiting output widget context manager."""
@@ -29,8 +28,18 @@ class Output(w.Output):
         return not self.err_stop if ip else None
 
 
+class ShrinkWrap(Output):
+    layout = w.Layout(display='flex', overflow_x='auto')
+
+def displayit(obj):
+    display(obj)
+    return obj
+
 def disable_scroll(selector='.output_scroll'):
-    display(HTML('''
+    return displayit(disable_scroll_obj(selector))
+
+def disable_scroll_obj(selector='.output_scroll'):
+    return HTML('''
     <style>
         %s {
             height: unset !important;
@@ -39,7 +48,7 @@ def disable_scroll(selector='.output_scroll'):
             box-shadow: unset !important;
         }
     </style>
-    ''' % selector))
+    ''' % selector)
 
 def css(selector, nindent=2, **kw):
     display(HTML('''
