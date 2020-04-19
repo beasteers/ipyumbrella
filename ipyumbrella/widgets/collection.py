@@ -1,14 +1,18 @@
 from contextlib import contextmanager
+from IPython.display import display
 import ipywidgets.widgets as w
 from .output import Output
 
 
 class _CollectionMixin:
-    output_layout = None
+    output_layout = w.Layout()
+    title_layout = w.Layout(font_size='1.2em')
     def item(self, layout=None, err_stop=True, **kw):
         return self.append(Output(err_stop=err_stop, layout=layout or self.output_layout, **kw))
 
-    def append(self, child):
+    def append(self, child, title=None):
+        if title:
+            child = w.HBox([w.Label(value=title, layout=self.title_layout), child])
         self.children += (child,)
         return child
 
@@ -35,7 +39,6 @@ class Carousel(w.Box, _CollectionMixin):
         overflow_x='auto',
         max_width='100%',
     )
-    output_layout = w.Layout()
 
 class Accordion(w.Accordion, _SelectableCollectionMixin):
     pass
