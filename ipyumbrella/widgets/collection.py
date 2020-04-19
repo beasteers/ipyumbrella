@@ -2,11 +2,12 @@ from contextlib import contextmanager
 from IPython.display import display
 import ipywidgets.widgets as w
 from .output import Output
+from  .tags import header
 
 
 class _CollectionMixin:
     output_layout = w.Layout()
-    title_layout = w.Layout(font_size='1.2em')
+    # title_layout = w.Layout(font_size='1.2em')
     def __init__(self, *a, output_layout=None, **kw):
         super().__init__(*a, **kw)
         self.output_layout = output_layout or self.output_layout
@@ -17,9 +18,9 @@ class _CollectionMixin:
             err_stop=err_stop, layout=outlayout, **kw),
             title=title, layout=layout)
 
-    def append(self, child, title=None, layout=None):
+    def append(self, child, title=None, layout=None,  header_size=3):
         if title:
-            wrap = w.VBox([w.Label(value=title, layout=self.title_layout), child],
+            wrap = w.VBox([header(title, header_size), child],
                           layout=layout or self.output_layout)
             self.children += (wrap,)
         else:

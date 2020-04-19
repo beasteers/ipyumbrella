@@ -6,11 +6,10 @@ from traitlets import Bool
 class Output(w.Output):
     err_stop = Bool(True, help="Stop execution when exception is raised.").tag(sync=True)
 
-    def __init__(self, *a, no_scroll=True, **kw):
-        super().__init__(*a, **kw)
+    def __init__(self, no_scroll=True, **kw):
+        super().__init__(**kw)
         if no_scroll:
             self.add_class('output_scroll_disabled')
-            self.append_display_data(disable_scroll_obj('.output_scroll_disabled'))
 
     def __exit__(self, etype, evalue, tb):
         """Called upon exiting output widget context manager."""
