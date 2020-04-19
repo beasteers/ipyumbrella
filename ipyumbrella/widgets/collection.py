@@ -5,7 +5,7 @@ from .output import Output
 
 class _CollectionMixin:
     @contextmanager
-    def _capture(self, title=None, selected=None, err_stop=True, **kw):
+    def capture(self, title=None, selected=None, err_stop=True, **kw):
         out = Output(err_stop=err_stop, **kw)
         self.append(out, title, selected=selected)
         with out:
