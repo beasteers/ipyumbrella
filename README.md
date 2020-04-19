@@ -17,7 +17,7 @@ import matplotlib.pyplot as plt
 ```python
 carousel = uw.Carousel()
 for i in range(5):
-    with carousel.capture():
+    with carousel.item():
         plt.plot(range(10 + i))
 carousel
 ```
@@ -25,7 +25,7 @@ carousel
 ```python
 acc = uw.Accordion()
 for i in range(5):
-    with acc.capture():
+    with acc.item('Item {}'.format(i)):
         plt.plot(range(10 + i))
 acc
 ```
@@ -33,7 +33,7 @@ acc
 ```python
 tabs = uw.Tabs()
 for i in range(5):
-    with tabs.capture():
+    with tabs.item('Item {}'.format(i)):
         plt.plot(range(10 + i))
 tabs
 ```

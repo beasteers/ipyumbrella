@@ -5,36 +5,29 @@ from .output import Output
 
 class _CollectionMixin:
     output_layout = None
-    @contextmanager
-    def capture(self, err_stop=True, layout=None, **kw):
-        with Output(err_stop=err_stop, layout=layout or self.output_layout, **kw) as out:
-            self.append(out)
-            yield out
+    def item(self, layout=None, err_stop=True, **kw):
+        return self.append(Output(err_stop=err_stop, layout=layout or self.output_layout, **kw))
 
     def append(self, child):
         self.children += (child,)
+        return child
 
     def __len__(self):
         return len(self.children)
 
 class _SelectableCollectionMixin(_CollectionMixin):
-    @contextmanager
-    def capture(self, title=None, selected=None, err_stop=True, **kw):
-        with Output(err_stop=err_stop, **kw) as out:
-            self.append(out, title, selected=selected)
-            yield out
+    def item(self, title=None, selected=True, err_stop=True, **kw):
+        return self.append(Output(err_stop=err_stop, **kw), title, selected=selected)
 
     def select(self, i):
         self.selected_index = i
 
-    def append(self, child, title=None, selected=None):
+    def append(self, child, title=None, selected=True):
         self.children += (child,)
         title and self.set_title(len(self) - 1, title)
         self.select(selected and len(self) - 1)
+        return child
 
-
-class Accordion(w.Accordion, _SelectableCollectionMixin):
-    pass
 
 class Carousel(w.Box, _CollectionMixin):
     layout = w.Layout(
@@ -43,6 +36,9 @@ class Carousel(w.Box, _CollectionMixin):
         max_width='100%',
     )
     output_layout = w.Layout()
+
+class Accordion(w.Accordion, _SelectableCollectionMixin):
+    pass
 
 class Tab(w.Tab, _SelectableCollectionMixin):
     pass
