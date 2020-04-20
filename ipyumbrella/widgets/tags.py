@@ -1,4 +1,5 @@
 from IPython.display import display, HTML
+from .output import Output
 
 
 def h1(content):
@@ -23,7 +24,10 @@ def header(content, level=1):
     return tag(content, 'h{}'.format(level))
 
 def div(content):
-    return HTML(content)
+    return tag(content, 'div')
 
 def tag(content, elem='div'):
-    return HTML('<{elem}>{content}</{elem}>'.format(content=content, elem=elem))
+    out = Output()
+    with out:
+        display(HTML('<{elem}>{content}</{elem}>'.format(content=content, elem=elem)))
+    return out
