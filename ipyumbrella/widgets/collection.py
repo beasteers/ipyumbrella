@@ -30,6 +30,11 @@ class _CollectionMixin:
     def __len__(self):
         return len(self.children)
 
+    def items(self, items, title=None, **kw):
+        for item in items:
+            with self.item(title=title(item) if callable(title) else title, **kw):
+                yield item
+
 class _SelectableCollectionMixin(_CollectionMixin):
     def item(self, title=None, selected=True, err_stop=True, **kw):
         return self.append(Output(err_stop=err_stop, **kw), title, selected=selected)
