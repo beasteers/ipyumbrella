@@ -1,11 +1,11 @@
 from IPython.display import display
 import ipywidgets.widgets as w
-from  .tags import header
 
 def item_title(title=None, *a, **kw):
     return title(*a, **kw) if callable(title) else title
 
 def fake_header(child, title=None, header_size=1, **kw):
+    from  .tags import header
     if title:
         child = w.VBox([header(title, header_size), child], **kw)
         child.is_title = True
