@@ -3,7 +3,7 @@ import ipywidgets.widgets as w
 from .output import Output
 from . import util
 
-class _CollectionMixin:
+class _CollectionMixin(util._DisplayMixin):
     output_layout = w.Layout()
     def __init__(self, *a, output_layout=None, **kw):
         super().__init__(*a, **kw)
