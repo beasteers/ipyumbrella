@@ -1,4 +1,4 @@
-from IPython.display import display, HTML
+from IPython.display import HTML
 from .output import displayit
 
 def style(noscroll=True, fullimg=True):
