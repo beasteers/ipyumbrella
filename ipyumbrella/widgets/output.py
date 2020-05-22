@@ -1,9 +1,10 @@
+from functools import wraps
 from IPython import get_ipython
-from IPython.display import display
 import ipywidgets.widgets as w
 from traitlets import Bool
+from .util import _DisplayMixin
 
-class Output(w.Output):
+class Output(w.Output, _DisplayMixin):
     err_stop = Bool(True, help="Stop execution when exception is raised.").tag(sync=True)
 
     def __init__(self, no_scroll=True, **kw):
@@ -26,10 +27,13 @@ class Output(w.Output):
         #     raise ExceptionAlreadyShownByOutput(etype, evalue, tb)
         return not self.err_stop if ip else None
 
+    def function(self, func):
+        @wraps(func)
+        def inner(*ai, **kwi):
+            with self:
+                return func(*ai, **kwi)
+        return inner
+
 
 class ShrinkWrap(Output):
     layout = w.Layout(display='flex', overflow_x='auto')
-
-def displayit(obj, show=True):
-    show and display(obj)
-    return obj

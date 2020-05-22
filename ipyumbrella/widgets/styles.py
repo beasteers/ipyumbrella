@@ -1,25 +1,19 @@
 from IPython.display import HTML
-from .output import displayit
+from .util import displayit
 
-def style(noscroll=True, fullimg=True):
+def style(noscroll=True, fullimg=False):
     noscroll and disable_scroll()
     fullimg and full_width_img()
 
 def disable_scroll(selector='.output_scroll', display=True):
-    return add_styles('''
-        %s {
-            height: unset !important;
-            border-radius: unset !important;
-            -webkit-box-shadow: unset !important;
-            box-shadow: unset !important;
-        }
-    ''' % selector, display=display)
+    rmkeys = ('height', 'border-radius', '-webkit-box-shadow', 'box-shadow')
+    return add_styles(dict2css(selector, {k: UNSET for k in rmkeys}), display=display)
+
+def full_width_img(selector='.jp-RenderedImage img', width='100%', display=True):
+    return add_styles(dict2css(selector, width=width), display=display)
 
 UNSET = 'unset !important'
-FORCE = lambda x: '{} !important'.format(x)
-
-def full_width_img(selector='.jp-RenderedImage img', display=True):
-    return add_styles(dict2css(selector, width='100%'), display=display)
+FORCE = '{} !important'.format
 
 def add_styles(styles, display=True):
     return displayit(HTML('''
