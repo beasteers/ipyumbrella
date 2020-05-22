@@ -1,5 +1,5 @@
 from contextlib import contextmanager
-from IPython.display import display
+from IPython.display import display as display_
 import ipywidgets.widgets as w
 from .output import Output
 from  .tags import header
@@ -14,11 +14,11 @@ class _CollectionMixin:
 
     def item(self, title=None, layout=None, err_stop=True, **kw):
         outlayout = w.Layout() if title else layout or self.output_layout
-        return self.append(Output(
-            err_stop=err_stop, layout=outlayout, **kw),
+        return self.append(
+            Output(err_stop=err_stop, layout=outlayout, **kw),
             title=title, layout=layout)
 
-    def append(self, child, title=None, layout=None,  header_size=3):
+    def append(self, child, title=None, layout=None, header_size=3):
         if title:
             wrap = w.VBox([header(title, header_size), child],
                           layout=layout or self.output_layout)
@@ -29,6 +29,14 @@ class _CollectionMixin:
 
     def __len__(self):
         return len(self.children)
+
+    def display(self):
+        display_(self)
+        return self
+
+    @property
+    def D(self):
+        return self.display()
 
     def items(self, items, title=None, **kw):
         for item in items:
@@ -56,6 +64,7 @@ class Carousel(w.Box, _CollectionMixin):
         overflow_y='visible',
         max_width='100%',
     )
+    output_layout = w.Layout(min_width='60%')
 
 class Accordion(w.Accordion, _SelectableCollectionMixin):
     pass
