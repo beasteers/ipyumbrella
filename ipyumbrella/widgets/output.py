@@ -1,5 +1,5 @@
 from IPython import get_ipython
-from IPython.display import display, HTML
+from IPython.display import display
 import ipywidgets.widgets as w
 from traitlets import Bool
 
@@ -30,33 +30,6 @@ class Output(w.Output):
 class ShrinkWrap(Output):
     layout = w.Layout(display='flex', overflow_x='auto')
 
-def displayit(obj):
-    display(obj)
+def displayit(obj, show=True):
+    show and display(obj)
     return obj
-
-def disable_scroll(selector='.output_scroll'):
-    return displayit(disable_scroll_obj(selector))
-
-def disable_scroll_obj(selector='.output_scroll'):
-    return HTML('''
-    <style>
-        %s {
-            height: unset !important;
-            border-radius: unset !important;
-            -webkit-box-shadow: unset !important;
-            box-shadow: unset !important;
-        }
-    </style>
-    ''' % selector)
-
-def css(selector, nindent=2, **kw):
-    display(HTML('''
-    <style>
-        {} {{
-            {}
-        }}
-    </style>
-    '''.format(selector, '\n'.join(
-        ' ' * nindent + '{}: {};'.format(k, v)
-        for k, v in kw.items()
-    ))))
