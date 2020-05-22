@@ -5,7 +5,7 @@ NAME = 'ipyumbrella'
 
 setuptools.setup(
     name=NAME,
-    version='0.0.23',
+    version='0.0.24',
     description='Extended widgets for jupyter notebooks.',
     long_description=open('README.md').read().strip(),
     long_description_content_type='text/markdown',
