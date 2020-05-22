@@ -40,6 +40,7 @@ class _CollectionMixin(util._DisplayMixin):
         self.children = util.set_tuple(self.children, pos, child)
         title and self.set_title(pos, title)
         selected and self.select(pos)
+        util.scw(self)
         return child
 
     '''Utils'''

@@ -27,3 +27,12 @@ class _DisplayMixin:
 def displayit(obj, show=True):
     show and display(obj)
     return obj
+
+
+C = None
+def gcw():
+    return C
+
+def scw(widget):
+    global C
+    C = widget
