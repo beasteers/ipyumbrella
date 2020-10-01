@@ -12,21 +12,27 @@ def disable_scroll(selector='.output_scroll', display=True):
 def full_width_img(selector='.jp-RenderedImage img', width='100%', display=True):
     return add_styles(dict2css(selector, width=width), display=display)
 
+def full_width(selector, width='100%', display=True):
+    return add_styles(dict2css(selector, width=width), display=display)
+
+
+
 UNSET = 'unset !important'
 FORCE = '{} !important'.format
 
 def add_styles(styles, display=True):
     return displayit(HTML('''
-    <style>
-        {}
-    </style>
+<style>
+    {}
+</style>
     '''.format(styles)), show=display)
 
 def dict2css(selector, props=None, nindent=2, **kw):
+    kw = {k.replace('_', '-'): v for k, v in kw.items()}
     return '''
-        {} {{
-            {}
-        }}
+{} {{
+    {}
+}}
     '''.format(selector, '\n'.join(
         ' ' * nindent + '{}: {};'.format(k, v)
         for k, v in dict(props or (), **kw).items()

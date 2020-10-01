@@ -24,12 +24,14 @@ class _CollectionMixin(util._DisplayMixin):
             with self.item(title=util.item_title(title, item), **kw):
                 yield item
 
-    def function(self, func, title=None, **kw):
-        @wraps(func)
-        def inner(*ai, **kwi):
-            with self.item(title=util.item_title(title, *ai, **kwi), **kw):
-                return func(*ai, **kwi)
-        return inner
+    def function(self, title=None, **kw):
+        def outer(func):
+            @wraps(func)
+            def inner(*ai, **kwi):
+                with self.item(title=util.item_title(title, *ai, **kwi), **kw):
+                    return func(*ai, **kwi)
+            return inner
+        return outer
 
     def append(self, child, title=None, selected=True, update=True, pos=None):
         pos = (
@@ -77,10 +79,10 @@ class Carousel(w.Box, _CollectionMixin, _FauxTitleMixin):
         overflow_y='visible',
         max_width='100%',
     )
-    output_layout = w.Layout(min_width='60%')
+    output_layout = w.Layout(flex='1 0 auto') #w.Layout(min_width='60%')
 
 class Accordion(w.Accordion, _CollectionMixin):
     pass
 
-class Tab(w.Tab, _CollectionMixin):
+class Tabs(w.Tab, _CollectionMixin):
     pass
